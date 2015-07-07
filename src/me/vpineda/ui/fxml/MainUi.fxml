@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Point3D?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<GridPane alignment="TOP_LEFT" gridLinesVisible="false" prefHeight="465.999977929685" prefWidth="634.0" scaleX="1.0" scaleY="1.0" snapToPixel="true" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
+  <children>
+    <AnchorPane disable="false" prefHeight="30.0" prefWidth="200.0" visible="true" GridPane.columnIndex="0" GridPane.rowIndex="0">
+      <children>
+        <GridPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+          <children>
+            <ToolBar maxHeight="40.0" prefHeight="40.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
+              <items>
+                <Button cancelButton="false" mnemonicParsing="false" text="Button" />
+              </items>
+            </ToolBar>
+            <ToolBar maxHeight="40.0" orientation="HORIZONTAL" prefHeight="40.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="0">
+              <items>
+                <Button id="refreshButton" defaultButton="false" mnemonicParsing="false" rotate="0.0" text="Refresh" />
+              </items>
+            </ToolBar>
+          </children>
+          <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="-1.0" />
+          </columnConstraints>
+          <rowConstraints>
+            <RowConstraints minHeight="10.0" percentHeight="-1.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          </rowConstraints>
+        </GridPane>
+      </children>
+    </AnchorPane>
+    <AnchorPane prefHeight="460.0" prefWidth="-1.0" GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
+      <children>
+        <SplitPane dividerPositions="0.254746835443038" focusTraversable="true" prefHeight="-1.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+          <items>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="450.0" prefWidth="100.0">
+              <children>
+                <ListView id="listViewMain" orientation="VERTICAL" prefHeight="450.0" prefWidth="200.0" visible="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+              </children>
+            </AnchorPane>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+              <children>
+                <SplitPane dividerPositions="0.2918454935622318" focusTraversable="true" prefHeight="160.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <items>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                      <children>
+                        <ListView id="listViewCourses" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                      </children>
+                    </AnchorPane>
+                    <AnchorPane id="mainDisplayAnchorPane" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                      <children>
+                        <BarChart id="barChart" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                          <xAxis>
+                            <CategoryAxis side="BOTTOM" />
+                          </xAxis>
+                          <yAxis>
+                            <NumberAxis side="LEFT" />
+                          </yAxis>
+                        </BarChart>
+                      </children>
+                    </AnchorPane>
+                  </items>
+                </SplitPane>
+              </children>
+            </AnchorPane>
+          </items>
+        </SplitPane>
+      </children>
+      <GridPane.margin>
+        <Insets />
+      </GridPane.margin>
+    </AnchorPane>
+  </children>
+  <columnConstraints>
+    <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+  </columnConstraints>
+  <rotationAxis>
+    <Point3D />
+  </rotationAxis>
+  <rowConstraints>
+    <RowConstraints maxHeight="40.0" minHeight="0.0" percentHeight="0.0" prefHeight="40.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="-1.0" minHeight="10.0" percentHeight="-1.0" prefHeight="263.0" valignment="TOP" vgrow="ALWAYS" />
+  </rowConstraints>
+</GridPane>
