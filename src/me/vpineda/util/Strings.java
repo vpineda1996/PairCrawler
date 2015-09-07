@@ -16,6 +16,10 @@ public class Strings {
 
     public static final String SECTIONFACTORYPATH = System.getProperty("user.home") + "/Documents/PairCrawler/sections.data";
 
+    public static final String MAIN_PAIR_PAGE = "https://webprd01.pair.ubc.ca/reports/gradesdist_request.action";
+
+    public static final int debug = 1;
+
 
 
     private Strings(){}

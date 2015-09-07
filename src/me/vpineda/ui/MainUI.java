@@ -13,12 +13,12 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.chart.BarChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import me.vpineda.database.Section;
@@ -43,22 +43,56 @@ public class MainUI extends Application{
 
     private static boolean WINDOWOPENED = false;
 
+    /**
+     * Only called once when the object or window is initialized for the first time
+     * @throws Exception
+     */
+    @Override
+    public void init() throws Exception {
+        super.init();
+        // If you are in MACOSX we'll adjust some system settings so the dock can work properly
+        if(OSInfo.OSType.MACOSX.equals(OSInfo.getOSType())) {
+            setupMacCustomPrefs();
+        }
+        // On anther thread we'll initialize the controller
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Request.getInstance().initialize();
+            }
+        }).start();
+        // Read all of the info from the database if there is one present
+        SectionFactory.createFromFile(new File(Strings.SECTIONFACTORYPATH));
+    }
+
+    /**
+     * Method called whenever the window is shown or the system wants to open a new window
+     * @param primaryStage the stage where the window will be created
+     * @throws Exception
+     */
     @Override
     public void start(final Stage primaryStage) throws Exception {
         if(MainUI.WINDOWOPENED){
             primaryStage.close();
         }else {
+            // Load the pref file where all of the window is drawn
             Parent root = FXMLLoader.load(getClass().getResource("fxml/MainUi.fxml"));
+            // Set window title
             primaryStage.setTitle("PairCrawler");
             primaryStage.setScene(new Scene(root));
             primaryStage.show();
+            // Set the window opened so we dont have dupes
             setWindowOpened();
+            // Initialize the barChart
             try {
-                HistogramScene.getInstance().setupBarChart((BarChart) primaryStage.getScene().lookup("#barChart"));
+                HistogramScene.getInstance().setupChart((AnchorPane) primaryStage.getScene().lookup("#mainDisplayAnchorPane"));
             }catch (Exception e) {
                 e.printStackTrace();
             }
+            // This is a variable that we need to set so that any other window such as the Captcha window can know
+            // the FX thread is running
             Request.JAVAFXTHREADRUNNING = true;
+            // On a new thread setup all of the elements in the UI with their respective callbacks
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -70,14 +104,23 @@ public class MainUI extends Application{
         }
     }
 
+    /**
+     * Called when the window is opened, use carefully
+     * IT MAY CAUSE BUGS
+     */
     public void setWindowOpened() {
         MainUI.WINDOWOPENED = true;
     }
 
+    /**
+     * Sets the callback for the close window action
+     * @param primaryStage the stage that will be modified
+     */
     private void setupOpenCloseWindow(Stage primaryStage) {
         primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent event) {
+                // With this we tell the app that we are ready to open a new window if necessary
                 MainUI.WINDOWOPENED = false;
             }
         });
@@ -193,24 +236,6 @@ public class MainUI extends Application{
                 }
             }
         });
-    }
-
-    @Override
-    public void init() throws Exception {
-        super.init();
-        System.setProperty("jsse.enableSNIExtension", "false");
-//        Platform.setImplicitExit(false);
-        if(OSInfo.OSType.MACOSX.equals(OSInfo.getOSType())) {
-            setupMacCustomPrefs();
-        }
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Request.getInstance().initialize();
-            }
-        }).start();
-        SectionFactory.createFromFile(new File(Strings.SECTIONFACTORYPATH));
-        System.out.println(SectionFactory.getInstance());
     }
 
     public void fillInListView(ListView<String> listView) {

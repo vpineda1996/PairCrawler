@@ -9,6 +9,7 @@ import me.vpineda.exceptions.IllegalGradesReportException;
 import me.vpineda.exceptions.IllegalRequestException;
 import me.vpineda.exceptions.JSessionIDNotSetException;
 import me.vpineda.exceptions.UnableToGetSectionsException;
+import me.vpineda.ui.CWLogin;
 import me.vpineda.ui.CaptchaWindow;
 import me.vpineda.util.Strings;
 import me.vpineda.util.Terminal;
@@ -393,7 +394,11 @@ public class Request {
     }
 
     private void setupJsessionIdCookie() {
-        jsessionid = Terminal.getElementFromTerminal(Strings.JSESSIONCOOKIENAME);
+        try {
+            jsessionid = CWLogin.getValidatedCookie();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         if(jsessionid.length() <= 0) System.exit(-1);
     }
 

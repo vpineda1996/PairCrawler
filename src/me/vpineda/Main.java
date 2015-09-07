@@ -1,7 +1,7 @@
 package me.vpineda;
 
-import me.vpineda.request.test.RequestTest;
-import me.vpineda.util.Terminal;
+import javafx.application.Application;
+import me.vpineda.ui.MainUI;
 
 public class Main {
 
@@ -9,6 +9,6 @@ public class Main {
         // Some arguments so SSL can work
         System.setProperty("jsse.enableSNIExtension", "false");
         // Done, do your thing
-        new RequestTest(Terminal.parseArguments(args)).initialize();
+        Application.launch(MainUI.class);
     }
 }

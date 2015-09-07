@@ -8,7 +8,7 @@ import java.util.Iterator;
  * Created by vpineda1996 on 2015-05-20.
  */
 public class Grades implements Serializable, Iterable<Integer> {
-    private int[] grades = new int[15];
+    private int[] grades = new int[10];
     private float average, standardDeviation;
     private int high, low, pass, fail, withdrew;
 
@@ -36,14 +36,58 @@ public class Grades implements Serializable, Iterable<Integer> {
         }
     }
 
-    public void set(Percentages position, int i) {
-        grades[position.getArrayValue()] = i;
+    public void set(Percentages position, int count) {
+        switch (position.getArrayValue()){
+            case 0: case 1: case 2: case 3: case 4:
+                grades[position.getArrayValue()] = count;
+                break;
+            case 5: case 6:
+                grades[5] += count;
+                break;
+            case 7: case 8: case 9:
+                grades[6] += count;
+                break;
+            case 10: case 11:
+                grades[7] += count;
+                break;
+            case 12: case 13:
+                grades[8] += count;
+                break;
+            case 14:
+                grades[9] = count;
+                break;
+        }
     }
     public void setAll(int array[]){
-        System.arraycopy(array,0,grades,0,grades.length);
+        int i = 0;
+        for(int a : array){
+            set(Percentages.values()[i++],a);
+        }
     }
+
     public int get(Percentages position){
-        return grades[position.getArrayValue()];
+        int temp = 0;
+        switch (position.getArrayValue()){
+            case 0: case 1: case 2: case 3: case 4:
+                temp = grades[position.getArrayValue()];
+                break;
+            case 5: case 6:
+                temp = grades[5];
+                break;
+            case 7: case 8: case 9:
+                temp = grades[6];
+                break;
+            case 10: case 11:
+                temp = grades[7];
+                break;
+            case 12: case 13:
+                temp = grades[8];
+                break;
+            case 14:
+                temp = grades[9];
+                break;
+        }
+        return temp;
     }
 
     public float getAverage() {
