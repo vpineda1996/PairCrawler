@@ -9,14 +9,13 @@ import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
+import javafx.scene.control.*;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -31,6 +30,7 @@ import me.vpineda.util.Strings;
 import sun.awt.OSInfo;
 
 import java.awt.*;
+import java.awt.MenuItem;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
@@ -150,8 +150,25 @@ public class MainUI extends Application{
                     });
                 } catch (IOException e) {
                     e.printStackTrace();
-                } catch (JSessionIDNotSetException e){
-                    new Alert(Alert.AlertType.ERROR, "Please fill in JSESSIONID", ButtonType.OK, ButtonType.CLOSE).show();
+                } catch (final JSessionIDNotSetException e){
+                    Alert alert = new Alert(Alert.AlertType.ERROR,
+                            "Please fill in JSESSIONID",
+                            ButtonType.OK,
+                            ButtonType.CLOSE);
+                    Optional<ButtonType> result = alert.showAndWait();
+                    if (result.get() == ButtonType.OK){
+                        System.out.println("Calling CWL for login");
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    CWLogin.getValidatedCookie();
+                                } catch (InterruptedException e1) {
+                                    e1.printStackTrace();
+                                }
+                            }
+                        }).start();
+                    }
                 }
             }
         });

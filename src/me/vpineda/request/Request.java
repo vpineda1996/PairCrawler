@@ -363,30 +363,41 @@ public class Request {
 
             engineScript = getResponseFromServer(connection, null);
         }
+        try {
+            int indexOfStart = engineScript.indexOf("dwr.engine._origScriptSessionId");
+            scriptSessionCookie = engineScript.substring(indexOfStart + 35, engineScript.indexOf("\n", indexOfStart) - 2);
 
-        int indexOfStart = engineScript.indexOf("dwr.engine._origScriptSessionId");
-        scriptSessionCookie = engineScript.substring(indexOfStart + 35, engineScript.indexOf("\n",indexOfStart) - 2);
-
-        System.out.println("New script token:\t" + scriptSessionCookie);
-        return scriptSessionCookie;
+            System.out.println("New script token:\t" + scriptSessionCookie);
+            return scriptSessionCookie;
+        }catch (StringIndexOutOfBoundsException e){
+            setupJsessionIdCookie();
+            return getNewScriptToken(true);
+        }
     }
 
     /**
      * Gets the token from the website so we can request new statistics
+     * @param refresh if we want to load again the website
+     * @return
      * @throws IOException
      */
     public String getNewToken(boolean refresh) throws IOException {
-        if(refresh) {
+        if(refresh || mainSite == null) {
             URL url = new URL(Strings.GRADESSEREVERURL + GRADESPAGE);
             HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
 
             mainSite = getResponseFromServer(connection, null);
         }
+        try {
+            int indexOfStart = mainSite.indexOf("<input type=\"hidden\" name=\"token\"");
+            token = mainSite.substring(indexOfStart + 41, mainSite.indexOf("/>",indexOfStart) - 2);
+            System.out.println("New token:\t" + token);
+            return token;
+        }catch (StringIndexOutOfBoundsException e){
+            setupJsessionIdCookie();
+            return getNewToken(true);
+        }
 
-        int indexOfStart = mainSite.indexOf("<input type=\"hidden\" name=\"token\"");
-        token = mainSite.substring(indexOfStart + 41, mainSite.indexOf("/>",indexOfStart) - 2);
-        System.out.println("New token:\t" + token);
-        return token;
     }
 
     public String getRequestSession() {
